@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact - MIHOUBI Marouane</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="glitch-overlay"></div>
+
+  <header>
+    <div class="logo glitch" data-text="CONTACT">CONTACT</div>
+  </header>
+
+  <main class="contact-container">
+    <form id="contactForm" class="cyber-form">
+      <div class="form-group">
+        <label for="name">> NOM:</label>
+        <input type="text" id="name" name="name" required class="cyber-input" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">> EMAIL:</label>
+        <input type="email" id="email" name="email" required class="cyber-input" />
+      </div>
+
+      <div class="form-group">
+        <label for="message">> MESSAGE:</label>
+        <textarea id="message" name="message" rows="5" required class="cyber-textarea"></textarea>
+      </div>
+
+      <button type="submit" class="cyber-button">ENVOYER [✓]</button>
+    </form>
+
+    <div id="statusMessage" class="status-message"></div>
+  </main>
+
+  <footer>
+    <div class="terminal">
+      <div class="terminal-header">SYSTEME DE MESSAGERIE</div>
+      <div class="terminal-body">
+        <p>> Tous les champs sont requis</p>
+        <p>> Cryptage SSL activé</p>
+        <p class="blink">> _</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script EmailJS via esm.sh (v3 ESM) -->
+  <script type="module">
+    import emailjs from 'https://esm.sh/@emailjs/browser';
+
+    emailjs.init("a5PYJJvpSJ83edu1N"); // Clé publique
+
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const status = document.getElementById("statusMessage");
+      status.textContent = "📡 Envoi en cours...";
+      status.className = "status-message";
+
+      emailjs.send("service_portfolio", "template_6t1xt1n", {
+        name: form.name.value,
+        email: form.email.value,
+        message: form.message.value
+      }).then(() => {
+        status.textContent = "✅ Message envoyé avec succès !";
+        status.className = "status-message success";
+      }, (err) => {
+        status.textContent = "❌ Erreur : " + err.text;
+        status.className = "status-message error";
+        console.error("Erreur EmailJS :", err);
+      });
+    });
+  </script>
+</body>
+</html>
